@@ -1,9 +1,9 @@
-import Test from '@/components/Test'
+import C2SRegistrationPage from '@/components/c2s/C2SRegistrationPage'
 
 const Main = () => {
   return (
     <>
-    <Test/>
+      <C2SRegistrationPage />
 
     </>
   )

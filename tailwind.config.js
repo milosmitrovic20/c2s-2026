@@ -5,7 +5,12 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        c2s: ['Montserrat', 'Segoe UI', 'sans-serif'],
+        script: ['Dancing Script', 'Segoe Script', 'cursive'],
+      },
+    },
   },
   plugins: [],
 }
