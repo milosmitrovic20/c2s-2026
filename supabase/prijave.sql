@@ -162,8 +162,7 @@ const selectClassName = `${inputBaseClassName} appearance-none cursor-pointer pr
 const chevronClassName =
   'pointer-events-none absolute right-2.5 top-1/2 grid h-[22px] w-[22px] -translate-y-1/2 place-items-center rounded-full border border-[#FFFFFF]/65 text-[clamp(14px,0.35vw+12px,18px)] leading-none text-[#FFFFFF]/95'
 const textAreaClassName =
-  'min-h-[clamp(74px,1.9vw+62px,110px)] w-full resize-none rounded-[18px] border border-[#C6172F] bg-[#6A0B20] px-3 py-2.5 text-(--c2s-form-input-size) leading-[1.35] text-[#FFFFFF] shadow-[0_4px_4px_rgba(0,0,0,0.25)] placeholder:text-[#FFFFFF]/55 focus:outline focus:outline-2 focus:outline-[#E31E2F] disabled:cursor-not-allowed disabled:border-[#4E0610] disabled:bg-[#4E0610] disabled:text-[#FFFFFF]/45 disabled:placeholder:text-[#FFFFFF]/25 ' +
-  'max-[640px]:text-sm max-[640px]:px-2 max-[640px]:py-2 max-[640px]:min-h-[450px]'
+  'transition-all duration-200 min-h-[clamp(74px,1.9vw+62px,110px)] w-full resize-none rounded-[18px] border border-[#C6172F] bg-[#6A0B20] px-3 py-2.5 text-(--c2s-form-input-size) leading-[1.35] text-[#FFFFFF] shadow-[0_4px_4px_rgba(0,0,0,0.25)] placeholder:text-[#FFFFFF]/55 focus:outline focus:outline-2 focus:outline-[#E31E2F] disabled:cursor-not-allowed disabled:border-[#4E0610] disabled:bg-[#4E0610] disabled:text-[#FFFFFF]/45 disabled:placeholder:text-[#FFFFFF]/25 max-[640px]:text-sm max-[640px]:px-2 max-[640px]:py-2'
 const hintClassName =
   'mt-1 border-l border-[#FFFFFF]/45 pl-[7px] text-(--c2s-form-hint-size) text-[#FFFFFF]/40 text-justify'
 const panelStripClassName = 'my-2.5 border-l-2 border-[#FFFFFF]/60 pl-3 max-[640px]:my-2 max-[640px]:pl-2.5 min-[1500px]:my-4'
@@ -421,7 +420,7 @@ const Prijave = () => {
     }
 
     setSubmitState('success')
-    setSubmitMessage('Prijava je uspešno poslata!')
+    setSubmitMessage('Prijava je uspešno poslata.')
   }
 
   return (
@@ -872,8 +871,7 @@ const InputBar = ({
   hasError,
   onValueChange,
 }: InputBarProps) => {
-  // Ovdje koristimo outline klase da ne bi remetili shadow
-  const errorStyles = hasError ? '!border-[#FF7F8A] !outline !outline-2 !outline-[#FF7F8A]' : ''
+  const errorStyles = hasError ? '!border-[#FF7F8A] shadow-[0_0_0_2px_#FF7F8A]' : ''
 
   return (
     <div className="relative">
@@ -951,7 +949,7 @@ const QuestionArea = ({ label, name, placeholder, disabled, hasError }: Question
         name={name}
         placeholder={placeholder}
         disabled={disabled}
-        className={`${textAreaClassName} ${hasError ? '!border-[#FF7F8A] !outline !outline-2 !outline-[#FF7F8A]' : ''}`}
+        className={`${textAreaClassName} ${hasError ? '!border-[#FF7F8A] shadow-[0_0_0_2px_#FF7F8A]' : ''}`}
       />
     </div>
   )
@@ -984,7 +982,7 @@ const CheckItem = ({ label, checked, name, onChange, disabled, hasError }: Check
         disabled={disabled}
         className="peer absolute size-px opacity-0"
       />
-      <span className={`${checkBoxClassName} ${hasError ? '!border-[#FF7F8A] !bg-[#FF7F8A]/20 !outline !outline-2 !outline-[#FF7F8A] !outline-offset-1' : ''}`} />
+      <span className={`${checkBoxClassName} ${hasError ? '!border-[#FF7F8A] !bg-[#FF7F8A]/20 shadow-[0_0_0_2px_#FF7F8A]' : ''}`} />
       <span className="flex-1 text-left">{renderLabelText(label)}</span>
     </label>
   )

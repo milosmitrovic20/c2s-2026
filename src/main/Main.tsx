@@ -1,4 +1,4 @@
-import C2SRegistrationPage from '@/components/c2s/C2SRegistrationPage'
+import C2SRegistrationPage from '@/components/prijave/Prijave'
 
 const Main = () => {
   return (
