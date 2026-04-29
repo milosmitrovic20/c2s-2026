@@ -37,16 +37,6 @@ const progressMap: Record<SectionKey, number> = {
   speed: 90,
 }
 
-const studyYearOptions = [
-  'Prva godina',
-  'Druga godina',
-  'Treća godina',
-  'Četvrta godina',
-  'Peta godina',
-  'Master studije',
-  'Doktorske studije',
-]
-
 const testCompanyOptions = [
   'Test kompanija Alfa',
   'Test kompanija Beta',
@@ -649,9 +639,7 @@ const UvodScreen = ({
         <InputField
           label="GODINA STUDIJA *"
           name="studyYear"
-          placeholder="Izaberi godinu"
-          hasChevron
-          options={studyYearOptions}
+          placeholder="Unesi godinu studija"
           hasError={errors.includes('studyYear')}
         />
       </div>
