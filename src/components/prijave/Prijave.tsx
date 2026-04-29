@@ -148,7 +148,7 @@ const navUnderlineClassName = 'mt-2.5 h-[2px] w-[182px] bg-[#FFFFFF]/85 max-[127
 const layoutClassName =
   'grid grid-cols-[250px_minmax(0,1fr)] items-start gap-[26px] max-[1270px]:grid-cols-1 max-[1270px]:gap-4 max-[640px]:gap-2 min-[1500px]:grid-cols-[270px_minmax(0,1fr)] min-[1500px]:gap-[78px]'
 const navClassName = 
-  'pt-2 max-[1270px]:flex max-[1270px]:flex-row max-[1270px]:justify-between max-[1270px]:gap-2 max-[640px]:flex max-[640px]:flex-row max-[640px]:justify-between max-[640px]:gap-1 max-[640px]:pb-2'
+  'pt-2 max-[1270px]:pt-0 max-[1270px]:flex max-[1270px]:flex-row max-[1270px]:justify-between max-[1270px]:gap-2 max-[640px]:flex max-[640px]:flex-row max-[640px]:justify-between max-[640px]:gap-1'
 const contentClassName = 'min-w-0 pt-[2px] min-[1500px]:pt-[6px] text-left'
 const gridTwoClassName = 'grid grid-cols-2 gap-2.5 max-[1270px]:grid-cols-2 max-[800px]:grid-cols-1 max-[1270px]:gap-3 max-[640px]:gap-1.5 min-[1500px]:gap-4'
 const mt4ClassName = 'mt-2.5'
@@ -280,6 +280,16 @@ const Prijave = () => {
     }
   }
 
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const isValidPhone = (phone: string) => {
+    const phoneRegex = /^06\d{7,8}$/
+    return phoneRegex.test(phone)
+  }
+
   const handleFormChange = (event: FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     if (target.name && errors.includes(target.name)) {
@@ -313,8 +323,19 @@ const Prijave = () => {
     const customFacultyName = getFormValue(formData, 'customFaculty')
 
     if (!fullName) newErrors.push('fullName')
-    if (!email) newErrors.push('email')
-    if (!phone) newErrors.push('phone')
+    
+    if (!email) {
+      newErrors.push('email')
+    } else if (!isValidEmail(email)) {
+      newErrors.push('email')
+    }
+
+    if (!phone) {
+      newErrors.push('phone')
+    } else if (!isValidPhone(phone)) {
+      newErrors.push('phone')
+    }
+
     if (!faculty) newErrors.push('faculty')
     if (!studyYear) newErrors.push('studyYear')
     
@@ -354,11 +375,17 @@ const Prijave = () => {
       setErrors(newErrors)
       setSubmitState('error')
       
-      if (cvLink && !isGoogleDriveLink(cvLink)) {
-        setSubmitMessage('Popuni sva obavezna polja i proveri da li je CV validan Google Drive link.')
-      } else {
-        setSubmitMessage('Molimo te da popuniš sva obavezna polja (označena crvenom bojom).')
+      let errorMsg = 'Molimo te da popuniš sva obavezna polja.'
+      
+      if (email && !isValidEmail(email)) {
+        errorMsg = 'Uneti mejl nije u validnom formatu.'
+      } else if (phone && !isValidPhone(phone)) {
+        errorMsg = 'Telefon mora početi sa 06 i imati 9 ili 10 cifara.'
+      } else if (cvLink && !isGoogleDriveLink(cvLink)) {
+        errorMsg = 'CV mora biti validan Google Drive link.'
       }
+
+      setSubmitMessage(errorMsg)
       return
     }
 
@@ -435,14 +462,14 @@ const Prijave = () => {
           onSubmit={handleSubmit}
         >
           <header className={headerClassName}>
-            <div className="flex-shrink-0 flex items-end">
+            <div className="shrink-0 flex items-end">
               <img src={logo} alt="Companies to Students" className={logoClassName} />
             </div>
 
             <div className="flex flex-col items-end justify-end gap-2 w-full max-w-full">
               {submitState !== 'idle' && (
                 <p 
-                  className={`text-right text-sm leading-tight max-w-[350px] max-[640px]:max-w-[220px] max-[640px]:text-xs ${
+                  className={`text-right text-sm font-bold leading-tight max-w-87.5 max-[640px]:max-w-55 max-[640px]:text-xs ${
                     submitState === 'success' ? 'text-[#8DE3B0]' : 'text-[#FF7F8A]'
                   }`}
                 >
@@ -462,7 +489,7 @@ const Prijave = () => {
                       POŠALJI
                     </span>
                     <span
-                      className="block italic text-[#E31E2F] group-hover:text-[#0b0b0b] transition-colors text-[28px] mr-[2.5rem] mt-[-0.4rem] max-[640px]:mr-[1rem] max-[640px]:mt-[-0.2rem] max-[640px]:text-[18px]"
+                      className="block italic text-[#E31E2F] group-hover:text-[#0b0b0b] transition-colors text-[28px] mr-10 mt-[-0.4rem] max-[640px]:mr-4 max-[640px]:mt-[-0.2rem] max-[640px]:text-[18px]"
                       style={{
                         fontFamily: '"Lovely May Script", Pacifico, "Brush Script MT", cursive',
                         lineHeight: '1'
@@ -472,7 +499,7 @@ const Prijave = () => {
                     </span>
                   </div>
 
-                  <div className="relative h-8 w-11 flex-shrink-0 flex items-center max-[640px]:w-8 max-[640px]:h-6">
+                  <div className="relative h-8 w-11 shrink-0 flex items-center max-[640px]:w-8 max-[640px]:h-6">
                     <img
                       src={submitArrow}
                       alt="arrow"
@@ -539,7 +566,7 @@ const Prijave = () => {
                   )
                 })}
               </aside>
-              <div className="hidden max-[1270px]:block h-[1px] w-full bg-[#FFFFFF]/85 mt-4 max-[640px]:mt-2" />
+              <div className="hidden max-[1270px]:block h-px w-full bg-[#FFFFFF]/85 mt-4" />
             </div>
 
             <main className={contentClassName}>
@@ -598,13 +625,14 @@ const UvodScreen = ({
           label="BROJ TELEFONA *"
           name="phone"
           hasError={errors.includes('phone')}
+          placeholder="06XXXXXXXX"
           hint="Korišćeno za WhatsApp grupu projekta"
           hintTextClassName="text-[16px] leading-[1.25] max-[640px]:text-[14px]"
         />      
         </div>
 
       <div className={mt4ClassName}>
-        <InputField label="MEJL ADRESA *" name="email" hasError={errors.includes('email')} />
+        <InputField label="MEJL ADRESA *" name="email" placeholder="primer@mejl.com" hasError={errors.includes('email')} />
       </div>
 
       <div className={`${gridTwoClassName} ${mt4ClassName}`}>
@@ -653,16 +681,19 @@ const UvodScreen = ({
           <div className={checkListClassName}>
             <CheckItem
               label="Tech challenge"
+              className="mb-1.5"
               checked={projectParticipation.tech}
               onChange={(value) => onProjectChange('tech', value)}
             />
             <CheckItem
               label="Panel diskusija"
+              className="mb-1.5"
               checked={projectParticipation.panel}
               onChange={(value) => onProjectChange('panel', value)}
             />
             <CheckItem
               label="Speed dating"
+              className="mb-1.5"
               checked={projectParticipation.speed}
               onChange={(value) => onProjectChange('speed', value)}
             />
@@ -681,18 +712,22 @@ const UvodScreen = ({
       <div className="mt-3">
         <CheckItem
           label="Saglasan/na sam da se moj mejl pošalje kompanijama koje učestvuju na projektu Kompanije studentima 2026 u svrhu obaveštenja o novim pozicijama i ponudama *"
+          className="mb-4"
           checked={false}
           name="emailConsentCompanies"
           hasError={errors.includes('emailConsentCompanies')}
         />
         <CheckItem
           label="Saglasan/na sam da se moj CV pošalje svim kompanijama koje učestvuju na projektu Kompanije studentima 2026 *"
+          className="mb-4"
           checked={false}
           name="cvConsentCompanies"
           hasError={errors.includes('cvConsentCompanies')}
         />
         <CheckItem
           label="Saglasan/na sam da mi pristižu obaveštenja o narednim FONIS-ovim aktivnostima. (NEWSLETTER)"
+          className="mb-4"
+          checked={false}
           name="newsletterConsent"
         />
       </div>
@@ -872,7 +907,6 @@ const InputBar = ({
   hasError,
   onValueChange,
 }: InputBarProps) => {
-  // Ovdje koristimo outline klase da ne bi remetili shadow
   const errorStyles = hasError ? '!border-[#FF7F8A] !outline !outline-2 !outline-[#FF7F8A]' : ''
 
   return (
@@ -951,7 +985,7 @@ const QuestionArea = ({ label, name, placeholder, disabled, hasError }: Question
         name={name}
         placeholder={placeholder}
         disabled={disabled}
-        className={`${textAreaClassName} ${hasError ? '!border-[#FF7F8A] !outline !outline-2 !outline-[#FF7F8A]' : ''}`}
+        className={`${textAreaClassName} ${hasError ? 'border-[#FF7F8A]! outline! outline-[#FF7F8A]!' : ''}`}
       />
     </div>
   )
@@ -964,14 +998,13 @@ type CheckItemProps = {
   onChange?: (value: boolean) => void
   disabled?: boolean
   hasError?: boolean
+  className?: string // Dodajemo ovo
 }
 
-const CheckItem = ({ label, checked, name, onChange, disabled, hasError }: CheckItemProps) => {
-  const compact = label.length > 70
-
+const CheckItem = ({ label, checked, name, onChange, disabled, hasError, className }: CheckItemProps) => {
   return (
     <label
-      className={`${checkBaseClassName} ${compact ? 'mb-1' : 'mb-1.5'} !text-[16px] max-[640px]:!text-[15px] ${
+      className={`${checkBaseClassName} ${className || ''} text-[16px]! max-[640px]:text-[15px]! ${
         disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
       }`}
     >
@@ -984,7 +1017,7 @@ const CheckItem = ({ label, checked, name, onChange, disabled, hasError }: Check
         disabled={disabled}
         className="peer absolute size-px opacity-0"
       />
-      <span className={`${checkBoxClassName} ${hasError ? '!border-[#FF7F8A] !bg-[#FF7F8A]/20 !outline !outline-2 !outline-[#FF7F8A] !outline-offset-1' : ''}`} />
+      <span className={`${checkBoxClassName} ${hasError ? 'border-[#FF7F8A]! bg-[#FF7F8A]/20! outline! outline-[#FF7F8A]! outline-offset-1!' : ''}`} />
       <span className="flex-1 text-left">{renderLabelText(label)}</span>
     </label>
   )
